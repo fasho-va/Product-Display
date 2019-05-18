@@ -19,11 +19,13 @@ class ProductDisplay extends React.Component{
         this.state = {
             product: {},
             images: [],
-            uuid: 1
+            uuid: 1,
+            infoSlider: true
         }
         this.productHandler = this.productHandler.bind(this);
         this.buttonHandler = this.buttonHandler.bind(this);
         this.productChange = this.productChange.bind(this);
+        this.infoButtonHandler = this.infoButtonHandler.bind(this);
     }
 
     componentDidMount() {
@@ -58,6 +60,12 @@ class ProductDisplay extends React.Component{
     buttonHandler() {
         this.productChange();
     }
+
+    infoButtonHandler() {
+        this.setState({
+            infoSlider: !this.state.infoSlider
+        })
+    }
     
     render() {
         return(
@@ -74,8 +82,7 @@ class ProductDisplay extends React.Component{
                     </div>
                     <br/>
                     <div style={componentStyle}>
-                        <button>+</button>
-                        <ProductInformation info = {this.state.product} />
+                        <ProductInformation button = {this.infoButtonHandler} infoSlider = {this.state.infoSlider} info = {this.state.product} />
                     </div>
                 </div>
             </div>

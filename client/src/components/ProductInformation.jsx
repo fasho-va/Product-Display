@@ -13,19 +13,19 @@ const nameStyle = {
 
 const ProductInformation = (props) => {
     let description = [];
-    if(props.info.description) {
+    if(props.info.description && props.infoSlider) {
         description = props.info.description.split(',')
     }
     return (
         <div >
             <p style={nameStyle}>{props.info.name}</p>
             <h2>${props.info.cost}</h2>
-            <h3>Product Details</h3>
-            <ul style={detailStyle}>
-            {description.map((element, index) => {
-                return <li>{element}</li>
-            })}
-            </ul>
+            <p onClick={props.button}>Product Details       +</p>
+                <ul style={detailStyle}>
+                {description.map((element, index) => {
+                    return <li>{element}</li>
+                })}
+                </ul>
         </div>
     )
 }
