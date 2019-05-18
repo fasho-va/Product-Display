@@ -10,4 +10,4 @@ RUN npm install
 
 EXPOSE 3003
 
-CMD ["node", "server.js"]
+CMD ["node", "./server/index.js"]
