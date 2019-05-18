@@ -8,16 +8,17 @@ app.use(bodyParser());
 
 app.use(express.static('./client/public'))
 
-app.get('/products', (req, res) => {
+app.get('/products:id', (req, res) => {
     let totalInfo = {};
-    db.getProductImages((err, results) => {
+    console.log(req.params);
+    db.getProductImages(req.params.id, (err, results) => {
         if (err) {
             console.log('err')
             res.send();
         } else {
             console.log('success image get')
             totalInfo.images = results.rows
-            db.getProductInfo((err, results) => {
+            db.getProductInfo(req.params.id, (err, results) => {
                 if (err) {
                     console.log('err')
                     res.send();

@@ -7,8 +7,8 @@ const client = new Client({
 
 client.connect()
 
-const getProductInfo = (cb) => {
-    client.query(`SELECT * FROM information WHERE uuid = 56`, (err, results) => {
+const getProductInfo = (id, cb) => {
+    client.query(`SELECT * FROM information WHERE uuid = ${id}`, (err, results) => {
         if (err) {
             console.log('error')
             cb(err, null)
@@ -18,8 +18,8 @@ const getProductInfo = (cb) => {
     })
 }
 
-const getProductImages = (cb) => {
-    client.query(`SELECT * FROM images WHERE product_id = 56`, (err, results) => {
+const getProductImages = (id, cb) => {
+    client.query(`SELECT * FROM images WHERE product_id = ${id}`, (err, results) => {
         if (err) {
             console.log('error')
             cb(err, null)

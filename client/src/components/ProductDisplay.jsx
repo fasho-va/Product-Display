@@ -9,17 +9,33 @@ const divStyle = {
     display: 'flex'
 }
 
+const componentStyle = {
+    padding: '20px'
+}
+
 class ProductDisplay extends React.Component{
     constructor(props) {
         super(props)
         this.state = {
             product: {},
-            images: []
+            images: [],
+            uuid: 1
         }
+        this.productHandler = this.productHandler.bind(this);
+        this.buttonHandler = this.buttonHandler.bind(this);
+        this.productChange = this.productChange.bind(this);
     }
 
     componentDidMount() {
-        Axios.get('/products')
+        this.productChange();
+    }
+    
+    productChange() {
+        Axios.get(`/products${this.state.uuid}`, {
+            params: {
+                id: this.state.uuid
+            }
+        })
         .then((results) => {
             console.log(results.data);
             this.setState({
@@ -31,20 +47,36 @@ class ProductDisplay extends React.Component{
             console.log(this.state)
         })
     }
+
+    productHandler(e) {
+        console.log(e.target.value);
+        this.setState({
+            uuid: e.target.value
+        })
+    }
+
+    buttonHandler() {
+        this.productChange();
+    }
     
     render() {
         return(
-            <div style={divStyle}>
-                <div>
-                    <MainGallery images = {this.state.images}/>
-                </div>
-                <br/>
-                <div>
-                    <SideGallery images = {this.state.images}/>
-                </div>
-                <br/>
-                <div>
-                    <ProductInformation info = {this.state.product} />
+            <div>
+                <input onChange={this.productHandler} type='text'></input>
+                <button onClick={this.buttonHandler}>Change Product</button>
+                <div style={divStyle}>
+                    <div style={componentStyle}>
+                        <MainGallery images = {this.state.images}/>
+                    </div>
+                    <br/>
+                    <div style={componentStyle}>
+                        <SideGallery images = {this.state.images}/>
+                    </div>
+                    <br/>
+                    <div style={componentStyle}>
+                        <button>+</button>
+                        <ProductInformation info = {this.state.product} />
+                    </div>
                 </div>
             </div>
         )
