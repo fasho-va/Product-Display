@@ -1,7 +1,7 @@
 module.exports = {
   apps: [{
     name: 'tutorial-2',
-    script: './index.js'
+    script: './server/index.js'
   }],
   deploy: {
     production: {
@@ -10,7 +10,7 @@ module.exports = {
       key: '~/.ssh/Product-Display.pem',
       ref: 'origin/master',
       repo: 'git@github.com:MasonHN/Product-Display.git',
-      path: '/home/ubuntu/Product-Display/server',
+      path: '/home/ubuntu/Product-Display/',
       'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js'
     }
   }
