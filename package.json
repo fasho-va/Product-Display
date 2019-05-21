@@ -8,10 +8,30 @@
     "node": ">=6.13.0"
   },
   "scripts": {
+    "start": "nodemon ./server/index.js",
+    "react-dev": "webpack -d --watch"
   },
   "dependencies": {
+    "@babel/cli": "^7.4.4",
+    "axios": "^0.18.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.16.4",
+    "jquery": "^3.4.1",
+    "mysql": "^2.17.1",
+    "nodemon": "^1.19.0",
+    "pg": "^7.11.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-slick": "^0.24.0",
+    "require": "^2.4.20",
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
-    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor"
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2"
   }
 }
