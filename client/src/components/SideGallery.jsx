@@ -23,13 +23,11 @@ class SideGallery extends React.Component {
 
         return (
             <div style={imageStyle} >
-            <Slider {...settings}>
+                <Slider {...settings}>
                     {this.props.images.map((element) => {
-                        if(typeof(element) === 'string') {
                         return <img src={element}></img>
-                        }
                     })}
-            </Slider>
+                </Slider>
         </div>
         )
     }
