@@ -1,16 +1,18 @@
 const { Client } = require('pg')
 const client = new Client({
-    user: 'huntermason',
-    host: 'localhost',
-    database: 'products'
+    user: 'hunternmason',
+    host: 'product-display-db.cprofozo9bor.us-east-2.rds.amazonaws.com',
+    database: 'productdisplaydb',
+    password: 'jcm800mason',
+    port: 5432
 })
 
 client.connect()
 
 const getProductInfo = (id, cb) => {
-    client.query(`SELECT * FROM information WHERE uuid = ${id}`, (err, results) => {
+    client.query(`SELECT * FROM information WHERE product_id = ${id}`, (err, results) => {
         if (err) {
-            console.log('error')
+            console.log(err)
             cb(err, null)
         } else {
             cb(null, results)
