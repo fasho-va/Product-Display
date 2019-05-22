@@ -13,7 +13,7 @@ app.get('/products:id', (req, res) => {
     console.log(req.params);
     db.getProductImages(req.params.id, (err, results) => {
         if (err) {
-            console.log('err')
+            console.log(err)
             res.send();
         } else {
             console.log('success image get')
