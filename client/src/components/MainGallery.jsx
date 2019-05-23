@@ -36,11 +36,11 @@ class MainGallery extends React.Component {
 
 
 		return (
-			<div style={galleryStyle} >
+			<div onClick = {this.props.fullscreen} style={galleryStyle} >
 				<Slider {...settings}>
-					{this.props.images.map((element) => {
+					{this.props.images.map((element, index) => {
 						return (
-							<img src={element}></img>
+							<img onClick={()=> {this.props.slideSet(index)}} src={element}></img>
 						)
 					})}
 				</Slider>

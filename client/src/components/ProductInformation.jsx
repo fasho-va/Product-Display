@@ -1,15 +1,9 @@
 import React from 'react'
 
 const detailStyle = {
-	fontFamily: 'Verdana',
+	fontFamily: 'Oswald',
 	fontSize: '14px'
 };
-
-const nameStyle = {
-	fontFamily: 'Verdana',
-	fontSize: '22px'
-};
-
 
 const ProductInformation = (props) => {
 	let description = [];
@@ -18,10 +12,10 @@ const ProductInformation = (props) => {
 	}
 	return (
 		<div >
-			<p style={nameStyle}>{props.info.name}</p>
-			<h2>${props.info.cost}</h2>
+			<h1 className='productName'>{props.info.name}</h1>
+			<h2 className='productPrice'>${props.info.cost} USD</h2>
 			<p onClick={props.button}>Product Details       +</p>
-				<ul style={detailStyle}>
+				<ul className='productDetails'>
 					{description.map((element, index) => {
 						return <li>{element}</li>
 					})}

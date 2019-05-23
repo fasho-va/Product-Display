@@ -36,10 +36,13 @@ class ProductDisplay extends React.Component{
 		this.infoButtonHandler = this.infoButtonHandler.bind(this);
 		this.fullscreen = this.fullscreen.bind(this);
 		this.zoom = this.zoom.bind(this);
-		this.fullscreenInitialClasses = this.fullscreenInitialClasses.bind(this);
+		//this.fullscreenInitialClasses = this.fullscreenInitialClasses.bind(this);
 		this.fullscreenNext = this.fullscreenNext.bind(this);
 		this.fullscreenPrev = this.fullscreenPrev.bind(this);
 		this.fullscreenMoveSlide = this.fullscreenMoveSlide.bind(this);
+		this.handleKeyPress = this.handleKeyPress.bind(this);
+		this.fullscreenSlideSet = this.fullscreenSlideSet.bind(this);
+		this.forceUpdate = this.forceUpdate.bind(this);
 	}
 
 	componentDidMount() {
@@ -97,22 +100,29 @@ class ProductDisplay extends React.Component{
 	zoom() {
 		this.setState({
 			zoom: !this.state.zoom
-		})
+		}, () => {if(!this.state.zoom) {this.fullscreenMoveSlide(this.state.slide)}})
 	}
 
-	fullscreenInitialClasses() {
-		const images = document.getElementsByClassName('fullscreenImg');
-		console.log(images);
-		images[images.length - 1].classList.add('prev')
-		images[0].classList.add('active')
-		images[1].classList.add('next')
-	}
+	// fullscreenInitialClasses() {
+	// 	const images = document.getElementsByClassName('fullscreenImg');
+	// 	console.log(images);
+	// 	if(this.state.slide === 0) {
+	// 		images[images.length - 1].classList.add('prev')
+	// 	} else {
+	// 		images[this.state.slide -1].classList.add('prev');
+	// 	}
+	// 	if(this.state.slide === images.length -1) {
+	// 		images[0].classList.add('next')
+	// 	} else {
+	// 		images[this.state.slide + 1].classList.add('next')
+	// 	}
+	// 	images[this.state.slide].classList.add('active')
+	// }
 
 	fullscreenNext() {
 		const images = document.getElementsByClassName('fullscreenImg');
 		console.log(images);
-	//	this.fullscreenInitialClasses();
-		if (this.state.slide === this.state.images.length -1) {
+		if (this.state.slide === images.length -1) {
 			this.setState({
 				slide: 0
 			}, () => {this.fullscreenMoveSlide(this.state.slide);})
@@ -126,7 +136,6 @@ class ProductDisplay extends React.Component{
 	fullscreenPrev() {
 		const images = document.getElementsByClassName('fullscreenImg');
 		console.log(images);
-	//	this.fullscreenInitialClasses();
 		if (this.state.slide === 0) {
 			this.setState({
 				slide: this.state.images.length -1
@@ -145,16 +154,16 @@ class ProductDisplay extends React.Component{
 		let oldNext = slide + 2;
 		let items = document.getElementsByClassName('fullscreenImg')
 		if(slide === 0) {
-			newPrev = this.state.images.length - 1;
-			oldPrev = this.state.images.length - 2;
-		} else if(slide === this.state.images.length -1) {
+			newPrev = items.length - 1;
+			oldPrev = items.length - 2;
+		} else if(slide === items.length -1) {
 			newNext = 0;
-			oldNext = this.state.images.length -1;
+			oldNext = items.length -1;
 		}
-		if(oldNext > this.state.images.length -1 ) {
+		if(oldNext > items.length -1 ) {
 			oldNext = 0;
 		} else if(oldPrev < 0) {
-			oldPrev = this.state.images.length - 1
+			oldPrev = items.length - 1
 		}
 		console.log(oldPrev, newPrev);
 		items[oldPrev].className = 'fullscreenImg';
@@ -163,16 +172,30 @@ class ProductDisplay extends React.Component{
 		items[slide].className = 'fullscreenImg' + " active";
 		items[newNext].className = 'fullscreenImg' + " next";
 	}
+
+	handleKeyPress(event) {
+			if(event.keyCode === 37) {
+				this.fullscreenPrev()
+			} else if (event.keyCode === 39) {
+				this.fullscreenNext();
+			}
+	}
+
+	fullscreenSlideSet(i) {
+		this.setState({
+			slide: i
+		}, () => {if(this.state.fullscreen) {this.fullscreenMoveSlide(this.state.slide)}})
+	}
 	
 	render() {
 		if(!this.state.fullscreen) {
 			return(
-				<div>			
+				<div >			
 					<input onChange={this.productHandler} type='text'></input>
 					<button onClick={this.buttonHandler}>Change Product</button>
 					<div style={divStyle}>
-						<div onClick={this.fullscreen} style={componentStyle}>
-							<MainGallery images = {this.state.images}/>
+						<div style={componentStyle}>
+							<MainGallery slideSet = {this.fullscreenSlideSet} fullscreen = {this.fullscreen} images = {this.state.images}/>
 						</div>
 						<br/>
 						<div style={componentStyle}>
@@ -187,7 +210,7 @@ class ProductDisplay extends React.Component{
 			)
 		} else {
 			return(
-				<div style={fullscreenStyle}>
+				<div tabIndex="-1" onKeyDown={this.handleKeyPress} style={fullscreenStyle}>
 					<FullScreenGallery slide = {this.state.slide} fullscreenMoveSlide = {this.fullscreenMoveSlide} fullscreenPrev = {this.fullscreenPrev} fullscreenNext = {this.fullscreenNext} fullscreen = {this.fullscreen} zoomFunc = {this.zoom} zoom = {this.state.zoom} images = {this.state.images}/>
 				</div>
 			)

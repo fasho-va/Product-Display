@@ -14,14 +14,12 @@ const FullScreenGallery = (props) => {
         </div>
         <div className='fullscreenWrapper'>
           <div className ='fullscreen'>
-            <img onClick={props.zoomFunc} className='fullscreenImg initial' src={props.images[0]}></img>
+            {/* <img onClick={props.zoomFunc} className='fullscreenImg initial' src={props.images[0]}></img> */}
             {props.images.map((element) => {
-              if (props.images[0] !== element) {
                 return <img onClick={props.zoomFunc} className='fullscreenImg' src={element}></img>
-              }
             })}
-            <div onClick = {props.fullscreenNext} className='fullscreenButton--next'></div>
-            <div onClick = {props.fullscreenPrev} className='fullscreenButton--prev'></div>
+            <div onClick={props.fullscreenNext} className='fullscreenButton--next'></div>
+            <div onClick={props.fullscreenPrev} className='fullscreenButton--prev'></div>
           </div>
         </div>
       </>
