@@ -4,6 +4,7 @@ import MainGallery from './MainGallery.jsx'
 import ProductInformation from './ProductInformation.jsx'
 import SideGallery from './SideGallery.jsx';
 import FullScreenGallery from './FullScreenGallery.jsx'
+import Slider from "react-slick";
 
 const fullscreenStyle = {
 	background: 'black',
@@ -18,17 +19,23 @@ const componentStyle = {
 	padding: '20px'
 }
 
+const galleryStyle = {
+	padding: '5px',
+	width: '900px'
+};
+
 class ProductDisplay extends React.Component{
 	constructor(props) {
 		super(props)
 		this.state = {
 			product: {},
 			images: [],
-			uuid: 1,
-			infoSlider: true,
+			uuid: 59,
 			fullscreen: false,
 			zoom: false,
-			slide: 0
+			slide: 0,
+			nav1: null,
+      nav2: null
 		}
 		this.productHandler = this.productHandler.bind(this);
 		this.buttonHandler = this.buttonHandler.bind(this);
@@ -47,6 +54,9 @@ class ProductDisplay extends React.Component{
 
 	componentDidMount() {
 		this.productChange();
+		this.setState({
+      nav1: this.slider1
+    });
 	}
 	
 	productChange() {
@@ -85,10 +95,13 @@ class ProductDisplay extends React.Component{
 		this.productChange();
 	}
 
-	infoButtonHandler() {
-		this.setState({
-			infoSlider: !this.state.infoSlider
-		})
+	infoButtonHandler(e) {
+		e.target.classList.toggle('active')
+		if(e.target.nextElementSibling.style.maxHeight) {
+			e.target.nextElementSibling.style.maxHeight = null;
+		} else {
+			e.target.nextElementSibling.style.maxHeight = e.target.nextElementSibling.scrollHeight + 'px';
+		}
 	}
 
 	fullscreen() {
@@ -100,24 +113,26 @@ class ProductDisplay extends React.Component{
 	zoom() {
 		this.setState({
 			zoom: !this.state.zoom
-		}, () => {if(!this.state.zoom) {this.fullscreenMoveSlide(this.state.slide)}})
+		}, () => {if(!this.state.zoom) {
+			this.fullscreenMoveSlide(this.state.slide)}
+		})
 	}
 
-	// fullscreenInitialClasses() {
-	// 	const images = document.getElementsByClassName('fullscreenImg');
-	// 	console.log(images);
-	// 	if(this.state.slide === 0) {
-	// 		images[images.length - 1].classList.add('prev')
-	// 	} else {
-	// 		images[this.state.slide -1].classList.add('prev');
-	// 	}
-	// 	if(this.state.slide === images.length -1) {
-	// 		images[0].classList.add('next')
-	// 	} else {
-	// 		images[this.state.slide + 1].classList.add('next')
-	// 	}
-	// 	images[this.state.slide].classList.add('active')
-	// }
+	fullscreenInitialClasses() {
+		const images = document.getElementsByClassName('fullscreenImg');
+		console.log(images);
+		if(this.state.slide === 0) {
+			images[images.length - 1].classList.add('prev')
+		} else {
+			images[this.state.slide -1].classList.add('prev');
+		}
+		if(this.state.slide === images.length -1) {
+			images[0].classList.add('next')
+		} else {
+			images[this.state.slide + 1].classList.add('next')
+		}
+		images[this.state.slide].classList.add('active')
+	}
 
 	fullscreenNext() {
 		const images = document.getElementsByClassName('fullscreenImg');
@@ -174,36 +189,58 @@ class ProductDisplay extends React.Component{
 	}
 
 	handleKeyPress(event) {
+		if(!this.state.zoom) {
 			if(event.keyCode === 37) {
 				this.fullscreenPrev()
 			} else if (event.keyCode === 39) {
 				this.fullscreenNext();
 			}
+		}
 	}
 
 	fullscreenSlideSet(i) {
 		this.setState({
 			slide: i
-		}, () => {if(this.state.fullscreen) {this.fullscreenMoveSlide(this.state.slide)}})
+		},
+		() => {
+			if(this.state.fullscreen) {this.fullscreenMoveSlide(this.state.slide)}
+		}
+		)
 	}
 	
 	render() {
 		if(!this.state.fullscreen) {
 			return(
-				<div >			
+				<div>			
 					<input onChange={this.productHandler} type='text'></input>
 					<button onClick={this.buttonHandler}>Change Product</button>
 					<div style={divStyle}>
-						<div style={componentStyle}>
+						<div style={galleryStyle}>
+							{/* <Slider
+								// customPaging={(i) => {return (<a><img style={{width: '90px'}} src={this.state.images[i + 1]}/></a>)}}
+								// dots={true}
+								infinite={true}
+								speed={500}
+								slidesToShow={2}
+								slidesToScroll={1}
+								accessibility={true}
+								ref={slider => (this.slider1 = slider)}
+							>
+								{this.state.images.map((element, index) => {
+									return (
+										<img  onClick={()=> {this.fullscreenSlideSet(index)}} src={element}></img>
+									)
+								})}
+							</Slider> */}
 							<MainGallery slideSet = {this.fullscreenSlideSet} fullscreen = {this.fullscreen} images = {this.state.images}/>
 						</div>
 						<br/>
 						<div style={componentStyle}>
-							<SideGallery images = {this.state.images}/>
+							<SideGallery slider = {this.state.nav1} images = {this.state.images}/>
 						</div>
 						<br/>
-						<div style={componentStyle}>
-							<ProductInformation button = {this.infoButtonHandler} infoSlider = {this.state.infoSlider} info = {this.state.product} />
+						<div style={{width: '100%', padding: '10px'}}>
+							<ProductInformation button = {this.infoButtonHandler} info = {this.state.product} />
 						</div>
 					</div>
 				</div>

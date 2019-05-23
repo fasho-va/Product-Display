@@ -9,8 +9,9 @@ const FullScreenGallery = (props) => {
   if(!props.zoom) {
     return (
       <>
-        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-          <div onClick={props.fullscreen} style={{color: 'white', width: '25px'}}>X</div>
+        <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+          <div onClick={props.zoomFunc} className='magnifyingGlass'></div>
+          <div onClick={props.fullscreen} className='exit'></div>
         </div>
         <div className='fullscreenWrapper'>
           <div className ='fullscreen'>
@@ -27,7 +28,7 @@ const FullScreenGallery = (props) => {
   } else {
     return (
       <div>
-        <img style={{width: '100%'}} onClick={props.zoomFunc} src={props.images[props.slide]}></img>
+        <img style={{width: '100%', cursor: 'zoom-out'}} onClick={props.zoomFunc} src={props.images[props.slide]}></img>
       </div>
     )
   }
