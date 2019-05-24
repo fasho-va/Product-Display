@@ -15,7 +15,7 @@ const MainGallery = (props) => {
 		return (
 			<div onClick = {props.fullscreen} style={galleryStyle} >
 				<Slider
-					infinite={true}
+					infinite={false}
 					speed={500}
 					slidesToShow={2}
 					slidesToScroll={1}
