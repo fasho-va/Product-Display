@@ -2,7 +2,7 @@ import React from 'react';
 import Slider from "react-slick";
 
 const imageStyle = {
-    padding: '5px',
+    margin: '1rem',
     width: '67px'
 };
 
@@ -20,8 +20,8 @@ const SideGallery = (props) => {
                 vertical={true}
                 accessibility={false}
             >
-                {props.images.map((element) => {
-                    return <img src={element}></img>
+                {props.images.map((element, index) => {
+                    return <img onClick={()=> {props.slider.slickGoTo(index)}} src={element}></img>
                 })}
             </Slider>
     </div>

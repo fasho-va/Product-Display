@@ -11,25 +11,29 @@ const galleryStyle = {
 
 
 
+
+
 const MainGallery = (props) => {
 		return (
 			<div onClick = {props.fullscreen} style={galleryStyle} >
 				<Slider
+					initialSlide={props.slide}
 					infinite={false}
-					speed={500}
+					speed={200}
 					slidesToShow={2}
 					slidesToScroll={1}
 					accessibility={true}
 				>
 					{props.images.map((element, index) => {
 						return (
-							<img  onClick={()=> {props.slideSet(index)}} src={element}></img>
+								<img onClick={()=> {props.slideSet(index)}} src={element}></img>
 						)
 					})}
 				</Slider>
 			</div>
 		)
 }
+
 
 
 
