@@ -38,7 +38,6 @@ class ProductDisplay extends React.Component{
 		this.infoButtonHandler = this.infoButtonHandler.bind(this);
 		this.fullscreen = this.fullscreen.bind(this);
 		this.zoom = this.zoom.bind(this);
-		//this.fullscreenInitialClasses = this.fullscreenInitialClasses.bind(this);
 		this.fullscreenNext = this.fullscreenNext.bind(this);
 		this.fullscreenPrev = this.fullscreenPrev.bind(this);
 		this.fullscreenMoveSlide = this.fullscreenMoveSlide.bind(this);
@@ -124,22 +123,6 @@ class ProductDisplay extends React.Component{
 			this.fullscreenMoveSlide(this.state.slide)}
 		})
 	}
-
-	// fullscreenInitialClasses() {
-	// 	const images = document.getElementsByClassName('fullscreenImg');
-	// 	console.log(images);
-	// 	if(this.state.slide === 0) {
-	// 		images[images.length - 1].classList.add('prev')
-	// 	} else {
-	// 		images[this.state.slide -1].classList.add('prev');
-	// 	}
-	// 	if(this.state.slide === images.length -1) {
-	// 		images[0].classList.add('next')
-	// 	} else {
-	// 		images[this.state.slide + 1].classList.add('next')
-	// 	}
-	// 	images[this.state.slide].classList.add('active')
-	// }
 
 	fullscreenNext() {
 		const images = document.getElementsByClassName('fullscreenImg');
@@ -249,7 +232,9 @@ class ProductDisplay extends React.Component{
 							>
 								{this.state.images.map((element, index) => {
 									return (
-										<img onClick={()=> {this.fullscreenSlideSet(index)}} src={element}></img>
+										<div >
+											<img style={{width: '95%', height: '95%'}} onClick={()=> {this.fullscreenSlideSet(index)}} src={element}></img>
+										</div>
 									)
 								})}
 							</Slider>
