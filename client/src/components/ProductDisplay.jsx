@@ -222,13 +222,9 @@ class ProductDisplay extends React.Component{
 		},
 		() => {
 			if(this.state.fullerScreen) {
-				if (elem.requestFullscreen) {
-					elem.requestFullscreen();
-				}
+				elem.requestFullscreen();
 			} else {
-				if (elem.exitFullscreen) {
-					elem.exitFullscreen();
-				}
+				document.webkitCancelFullScreen();
 			}
 		}
 		)
@@ -244,7 +240,7 @@ class ProductDisplay extends React.Component{
 						<FullScreenGallery fullerScreen = {this.fullerScreen} slide = {this.state.slide} fullscreenMoveSlide = {this.fullscreenMoveSlide} fullscreenPrev = {this.fullscreenPrev} fullscreenNext = {this.fullscreenNext} fullscreen = {this.fullscreen} zoomFunc = {this.zoom} zoom = {this.state.zoom} images = {this.state.images}/>
 					</div>
 					<div className='mainComponentWrapper'>
-						<div style={{width: '900px', margin:'1rem'}} onClick={this.fullscreen}>
+						<div style={{width: '900px', margin:'1rem'}} onDoubleClick={this.fullscreen}>
 							<Slider
 								initialSlide={this.state.slide}
 								infinite={false}

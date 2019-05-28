@@ -11,6 +11,7 @@ const FullScreenGallery = (props) => {
       <>
         <div style={{display: 'flex', justifyContent: 'flex-end'}}>
           <div className='fullscreenSlideCounter'>{props.slide + 1}/{props.images.length}</div>
+          <div onClick={props.fullerScreen} className='full-screen'></div>
           <div onClick={props.zoomFunc} className='magnifyingGlass'></div>
           <div onClick={props.fullscreen} className='exit'></div>
         </div>
