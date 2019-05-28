@@ -1,33 +1,31 @@
 import React from 'react'
 
-const detailStyle = {
-    fontFamily: 'Verdana',
-    fontSize: '14px'
-};
-
-const nameStyle = {
-    fontFamily: 'Verdana',
-    fontSize: '22px'
-};
-
-
 const ProductInformation = (props) => {
-    let description = [];
-    if(props.info.description && props.infoSlider) {
-        description = props.info.description.split(',')
-    }
-    return (
-        <div >
-            <p style={nameStyle}>{props.info.name}</p>
-            <h2>${props.info.cost}</h2>
-            <p onClick={props.button}>Product Details       +</p>
-                <ul style={detailStyle}>
-                {description.map((element, index) => {
-                    return <li>{element}</li>
-                })}
-                </ul>
-        </div>
-    )
+	let description = [];
+	if(props.info.description) {
+		description = props.info.description.split(',')
+	}
+	return (
+		<div>
+			<div className='productName'>{props.info.name}</div>
+			<div className='productPrice'>${props.info.cost} USD</div>
+			<p className='reviews'>{props.info.reviews} Reviews</p>
+			<hr></hr>
+			<div className='accordion' onClick={(e) => {props.button(e)}}>PRODUCT DETAILS</div>
+			<ul className='panel'>
+				{description.map((element, index) => {
+					return <li>{element}</li>
+				})}
+			</ul>
+			<hr></hr>
+			<div className='accordion' onClick={props.button}>SHIPPING INFORMATION</div>
+			<div className='panel'>$80 By Packmule</div>
+			<hr></hr>
+			<div className='accordion' onClick={props.button}>RETURNS</div>
+			<div className='panel'>No Returns</div>
+			<hr></hr>
+		</div>
+	)
 }
 
 export default ProductInformation;
