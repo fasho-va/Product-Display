@@ -45,6 +45,7 @@ class ProductDisplay extends React.Component{
 		this.fullscreenSlideSet = this.fullscreenSlideSet.bind(this);
 		this.forceUpdate = this.forceUpdate.bind(this);
 		this.fullerScreen = this.fullerScreen.bind(this);
+		this.detailButtonHandler = this.detailButtonHandler.bind(this);
 	}
 
 	componentDidMount() {
@@ -62,21 +63,19 @@ class ProductDisplay extends React.Component{
 			}
 		})
 		.then((results) => {
-			console.log(results.data);
 			let images = [];
 			for (let key in results.data.images[0]) {
 				if(typeof(results.data.images[0][key]) === 'string') {
 					images.push(results.data.images[0][key])
 				}
-			}
-			console.log(images);
+			}			
 			this.setState({
 				product: results.data.product,
 				images: images
 			})
 		})
 		.then(() => {
-			console.log(this.state)
+			document.getElementsByClassName('detailPanel')[0].style.maxHeight = document.getElementsByClassName('detailPanel')[0].scrollHeight + 'px';
 		})
 	}
 
@@ -100,12 +99,23 @@ class ProductDisplay extends React.Component{
 		}
 	}
 
+	detailButtonHandler(e) {
+		e.target.classList.toggle('active')
+		if(e.target.nextElementSibling.style.maxHeight !== '0px') {
+			e.target.nextElementSibling.style.maxHeight = '0px';
+		} else {
+			e.target.nextElementSibling.style.maxHeight = e.target.nextElementSibling.scrollHeight + 'px';
+		}
+	}
+
 	fullscreen(e) {
-		if(e.target.className !== 'fullscreenImg active') {
+		if(e.target.className !== 'fullscreenImg active' && e.target.className !== 'fullscreenButton--prev' && e.target.className !== 'fullscreenButton--next') {
 			if(this.state.fullscreen) {
+				document.getElementsByClassName('mainComponentWrapper')[0].style.opacity = null
 				document.getElementsByClassName('mainComponentWrapper')[0].style.visibility = null
 				document.getElementsByClassName('fullscreenGallery')[0].style.display = 'none'
 			} else {
+				document.getElementsByClassName('mainComponentWrapper')[0].style.opacity = 0
 				document.getElementsByClassName('mainComponentWrapper')[0].style.visibility = 'hidden'
 				document.getElementsByClassName('fullscreenGallery')[0].style.display = 'block'
 			}
@@ -260,7 +270,7 @@ class ProductDisplay extends React.Component{
 						</div>
 						<br/>
 						<div className='productInformation'>
-							<ProductInformation button = {this.infoButtonHandler} info = {this.state.product} />
+							<ProductInformation detailButton = {this.detailButtonHandler} infoButton = {this.infoButtonHandler} info = {this.state.product} />
 						</div>
 					</div>
 				</div>
