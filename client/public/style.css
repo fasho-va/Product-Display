@@ -2,6 +2,24 @@ body{
   margin: 0;
 }
 
+.fullscreenGallery {
+  display: none;
+  background: black;
+  text-align: center;
+  height: 100%;
+  margin: 0;
+}
+
+.mainComponentWrapper {
+  display: flex;
+	margin: 1rem;
+}
+
+.productInformation {
+  width: 100%;
+  padding: 10px;
+}
+
 .fullscreenWrapper {
   overflow: hidden;
   box-sizing: border-box;
@@ -11,12 +29,6 @@ body{
   transform-style: preserve-3d;
 }
 
-.fullscreenGallery {
-	background: black;
-  text-align: center;
-  height: 100%;
-  margin: 0;
-}
 
 .fullscreenImg {
   opacity: 0;
