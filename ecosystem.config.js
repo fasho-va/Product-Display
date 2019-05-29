@@ -10,7 +10,7 @@ module.exports = {
       key: '~/.ssh/Product-Display.pem',
       ref: 'origin/master',
       repo: 'git@github.com:MasonHN/Product-Display.git',
-      path: '/home/ubuntu/Product-Display/',
+      path: '/home/ubuntu/Product-Display2/',
       'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js'
     }
   }
