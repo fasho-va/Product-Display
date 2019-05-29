@@ -1,10 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('../database/index.js')
+const CORS = require('cors');
 
 const app = express();
 
 app.use(bodyParser());
+
+app.use(CORS());
 
 app.use(express.static('./client/public'))
 
