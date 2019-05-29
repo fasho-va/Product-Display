@@ -7,7 +7,7 @@ const app = express();
 
 app.use(bodyParser());
 
-app.use(CORS());
+// app.use(CORS());
 
 app.use(express.static('./client/public'))
 
