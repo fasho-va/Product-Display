@@ -35,6 +35,9 @@ class ProductDisplay extends React.Component{
 		this.forceUpdate = this.forceUpdate.bind(this);
 		this.fullerScreen = this.fullerScreen.bind(this);
 		this.detailButtonHandler = this.detailButtonHandler.bind(this);
+		this.mainComponentWrapper = React.createRef();
+		this.fullscreenGalleryComp = React.createRef();
+		this.productInfo = React.createRef();
 	}
 
 	componentDidMount() {
@@ -70,7 +73,8 @@ class ProductDisplay extends React.Component{
 			})
 		})
 		.then(() => {
-			document.getElementsByClassName('detailPanel')[0].style.maxHeight = document.getElementsByClassName('detailPanel')[0].scrollHeight + 'px';
+			console.log();
+			this.productInfo.current.children[0].children[5].style.maxHeight = this.productInfo.current.children[0].children[5].scrollHeight + 'px';
 		})
 	}
 
@@ -106,13 +110,14 @@ class ProductDisplay extends React.Component{
 	fullscreen(e) {
 		if(e.target.className !== 'fullscreenImg active' && e.target.className !== 'fullscreenButton--prev' && e.target.className !== 'fullscreenButton--next') {
 			if(this.state.fullscreen) {
-				document.getElementsByClassName('mainComponentWrapper')[0].style.opacity = null
-				document.getElementsByClassName('mainComponentWrapper')[0].style.visibility = null
-				document.getElementsByClassName('fullscreenGallery')[0].style.display = 'none'
+				this.mainComponentWrapper.current.style.opacity = null
+				this.mainComponentWrapper.current.style.visibility = null
+				this.fullscreenGalleryComp.current.style.display = 'none'
+				console.log(this.fullscreenChildRef)
 			} else {
-				document.getElementsByClassName('mainComponentWrapper')[0].style.opacity = 0
-				document.getElementsByClassName('mainComponentWrapper')[0].style.visibility = 'hidden'
-				document.getElementsByClassName('fullscreenGallery')[0].style.display = 'block'
+				this.mainComponentWrapper.current.style.opacity = 0
+				this.mainComponentWrapper.current.style.visibility = 'hidden'
+				this.fullscreenGalleryComp.current.style.display = 'block'
 			}
 			this.setState({
 				fullscreen: !this.state.fullscreen
@@ -141,9 +146,7 @@ class ProductDisplay extends React.Component{
 	}
 
 	fullscreenNext() {
-		const images = document.getElementsByClassName('fullscreenImg');
-		console.log(images);
-		if (this.state.slide === images.length -1) {
+		if (this.state.slide === this.state.images.length -1) {
 			this.setState({
 				slide: 0
 			}, () => {this.fullscreenMoveSlide(this.state.slide);})
@@ -155,8 +158,6 @@ class ProductDisplay extends React.Component{
 	}
 
 	fullscreenPrev() {
-		const images = document.getElementsByClassName('fullscreenImg');
-		console.log(images);
 		if (this.state.slide === 0) {
 			this.setState({
 				slide: this.state.images.length -1
@@ -173,7 +174,8 @@ class ProductDisplay extends React.Component{
 		let newNext = slide + 1;
 		let oldPrev = slide - 2;
 		let oldNext = slide + 2;
-		let items = document.getElementsByClassName('fullscreenImg')
+		let items = this.fullscreenChildRef.children
+		console.log(items)
 		if(slide === 0) {
 			newPrev = items.length - 1;
 			oldPrev = items.length - 2;
@@ -211,13 +213,13 @@ class ProductDisplay extends React.Component{
 	}
 
 	fullerScreen() {
-		const elem = document.documentElement;
+		const elem = this.fullscreenGalleryComp;
 		this.setState({
 			fullerScreen: !this.state.fullerScreen
 		},
 		() => {
 			if(this.state.fullerScreen) {
-				elem.requestFullscreen();
+				elem.current.requestFullscreen();
 			} else {
 				document.webkitCancelFullScreen();
 			}
@@ -231,11 +233,11 @@ class ProductDisplay extends React.Component{
 				<div>			
 					<input onChange={this.productHandler} type='text'></input>
 					<button onClick={this.buttonHandler}>Change Product</button>
-					<div className='fullscreenGallery'>
-						<FullScreenGallery fullerScreen = {this.fullerScreen} slide = {this.state.slide} fullscreenMoveSlide = {this.fullscreenMoveSlide} fullscreenPrev = {this.fullscreenPrev} fullscreenNext = {this.fullscreenNext} fullscreen = {this.fullscreen} zoomFunc = {this.zoom} zoom = {this.state.zoom} images = {this.state.images}/>
+					<div className='fullscreenGallery' ref={this.fullscreenGalleryComp}>
+						<FullScreenGallery childRef = {el => (this.fullscreenChildRef = el)} fullerScreen = {this.fullerScreen} slide = {this.state.slide} fullscreenMoveSlide = {this.fullscreenMoveSlide} fullscreenPrev = {this.fullscreenPrev} fullscreenNext = {this.fullscreenNext} fullscreen = {this.fullscreen} zoomFunc = {this.zoom} zoom = {this.state.zoom} images = {this.state.images}/>
 					</div>
-					<div className='mainComponentWrapper'>
-						<div className ='mainGallery' onDoubleClick={this.fullscreen}>
+					<div className='mainComponentWrapper' ref={this.mainComponentWrapper}>
+						<div className ='mainGallery' onClick={this.fullscreen}>
 							<Slider
 								initialSlide={this.state.slide}
 								infinite={false}
@@ -244,6 +246,11 @@ class ProductDisplay extends React.Component{
 								slidesToScroll={1}
 								accessibility={true}
 								ref={slider => (this.slider = slider)}
+								responsive={[{breakpoint: 900, settings: {
+									slidesToShow: 1,
+									slidesToScroll: 1,
+									initialSlide: this.state.slide
+								}}]}
 							>
 								{this.state.images.map((element, index) => {
 									return (
@@ -257,10 +264,10 @@ class ProductDisplay extends React.Component{
 						</div>
 						<br/>
 						<div className='sideGallery'>
-							<SideGallery slider = {this.state.nav1} images = {this.state.images} slideSet = {this.fullscreenSlideSet}/>
+							<SideGallery mobile={this.state.mobile} slider = {this.state.nav1} images = {this.state.images} slideSet = {this.fullscreenSlideSet}/>
 						</div>
 						<br/>
-						<div className='productInformation'>
+						<div ref={this.productInfo} className='productInformation'>
 							<ProductInformation detailButton = {this.detailButtonHandler} infoButton = {this.infoButtonHandler} info = {this.state.product} />
 						</div>
 					</div>

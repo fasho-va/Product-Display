@@ -1,7 +1,7 @@
-body{
+/* body{
   margin: 0;
   user-select: none;
-}
+} */
 
 /* component div styling */
 
@@ -9,13 +9,11 @@ body{
   display: none;
   background: black;
   text-align: center;
-  height: 100%;
   margin: 0;
 }
 
 .mainGallery {
-  width: 57vw;
-  margin: 1rem;
+  width: 95%;
 }
 
 .mainGalleryImg {
@@ -24,29 +22,25 @@ body{
 }
 
 .sideGallery {
-  margin: 1rem;
-  width: 50%;
+  width: 95%;
 }
 
 .mainComponentWrapper {
   display: flex;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-	margin: 1rem;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .productInformation {
-  width: 100%;
-  margin: 1rem;
-  margin-left: 3rem;
+  width: 95%;
+  
 }
 
 /* product info divs styling */
 
 .productName{
   font-family: 'Oswald', sans-serif;
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 400;
   font-style: normal;
   letter-spacing: 0.05em;
@@ -56,13 +50,13 @@ body{
   font-family: 'Oswald', sans-serif;
   color: #000000;
   font-weight: 600;
-  font-size: 28px;
+  font-size: 18px;
   letter-spacing: 0.05em;
 }
 
 .reviews{
   font-family: 'Oswald', sans-serif;
-  font-size: 13px;
+  font-size: 10px;
   font-weight: 400;
   font-style: normal;
   letter-spacing: 0.05em;
@@ -92,7 +86,7 @@ ul {
   border: none;
   text-align: left;
   outline: none;
-  font-size: 13px;
+  font-size: 10px;
   transition: 0.4s;
   letter-spacing: 0.05em;
 }
@@ -110,7 +104,7 @@ ul {
 
 .detailPanel {
   font-family: Oswald, sans-serif;
-  font-size: 13px;
+  font-size: 10px;
   font-style: normal;
   letter-spacing: 0.05em;
   padding: 0 18px;
@@ -121,7 +115,7 @@ ul {
 
 .panel {
   font-family: Oswald, sans-serif;
-  font-size: 13px;
+  font-size: 10px;
   font-style: normal;
   letter-spacing: 0.05em;
   padding: 0 18px;
@@ -134,7 +128,7 @@ ul {
 /* sidegallery component divs styling */
 
 .sideGalleryImg {
-  width: 4.6vw;
+  width: 100%;
 }
 
 /* fullscreen component divs styling */

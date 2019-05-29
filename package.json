@@ -11,7 +11,7 @@
     "start": "nodemon ./server/index.js",
     "restart": "pm2 startOrRestart ecosystem.config.js",
     "deploy": "pm2 deploy ecosystem.config.js production",
-    "react-dev": "webpack -p --watch"
+    "react-dev": "webpack -d --watch"
   },
   "dependencies": {
     "@babel/cli": "^7.4.4",
