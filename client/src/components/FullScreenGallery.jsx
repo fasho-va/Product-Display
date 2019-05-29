@@ -1,21 +1,17 @@
 import React from 'react';
-//import '../../public/style.css'
-
-const fullImageStyle = {
-  width: `50%`
-};
 
 const FullScreenGallery = (props) => {
   if(!props.zoom) {
     return (
       <>
-        <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+        <div className='fullscreenToolbar'>
+          <div className='fullscreenSlideCounter'>{props.slide + 1}/{props.images.length}</div>
+          <div onClick={props.fullerScreen} className='full-screen'></div>
           <div onClick={props.zoomFunc} className='magnifyingGlass'></div>
           <div onClick={props.fullscreen} className='exit'></div>
         </div>
-        <div className='fullscreenWrapper'>
+        <div className='fullscreenWrapper' onClick={props.fullscreen}>
           <div className ='fullscreen'>
-            {/* <img onClick={props.zoomFunc} className='fullscreenImg initial' src={props.images[0]}></img> */}
             {props.images.map((element) => {
                 return <img onClick={props.zoomFunc} className='fullscreenImg' src={element}></img>
             })}
@@ -28,7 +24,7 @@ const FullScreenGallery = (props) => {
   } else {
     return (
       <div>
-        <img style={{width: '100%', cursor: 'zoom-out'}} onClick={props.zoomFunc} src={props.images[props.slide]}></img>
+        <img className='zoomedIn' onClick={props.zoomFunc} src={props.images[props.slide]}></img>
       </div>
     )
   }

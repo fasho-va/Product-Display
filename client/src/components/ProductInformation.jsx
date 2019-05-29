@@ -11,17 +11,17 @@ const ProductInformation = (props) => {
 			<div className='productPrice'>${props.info.cost} USD</div>
 			<p className='reviews'>{props.info.reviews} Reviews</p>
 			<hr></hr>
-			<div className='accordion' onClick={(e) => {props.button(e)}}>PRODUCT DETAILS</div>
-			<ul className='panel'>
+			<div className='accordion active' onClick={props.detailButton}>PRODUCT DETAILS</div>
+			<ul className='detailPanel'>
 				{description.map((element, index) => {
 					return <li>{element}</li>
 				})}
 			</ul>
 			<hr></hr>
-			<div className='accordion' onClick={props.button}>SHIPPING INFORMATION</div>
+			<div className='accordion' onClick={props.infoButton}>SHIPPING INFORMATION</div>
 			<div className='panel'>$80 By Packmule</div>
 			<hr></hr>
-			<div className='accordion' onClick={props.button}>RETURNS</div>
+			<div className='accordion' onClick={props.infoButton}>RETURNS</div>
 			<div className='panel'>No Returns</div>
 			<hr></hr>
 		</div>

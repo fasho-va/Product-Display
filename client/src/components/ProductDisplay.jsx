@@ -7,17 +7,6 @@ import FullScreenGallery from './FullScreenGallery.jsx'
 import Slider from "react-slick";
 
 
-
-const divStyle = {
-	display: 'flex',
-	margin: '1rem'
-}
-
-const componentStyle = {
-	margin: '1rem'
-}
-
-
 class ProductDisplay extends React.Component{
 	constructor(props) {
 		super(props)
@@ -45,6 +34,7 @@ class ProductDisplay extends React.Component{
 		this.fullscreenSlideSet = this.fullscreenSlideSet.bind(this);
 		this.forceUpdate = this.forceUpdate.bind(this);
 		this.fullerScreen = this.fullerScreen.bind(this);
+		this.detailButtonHandler = this.detailButtonHandler.bind(this);
 	}
 
 	componentDidMount() {
@@ -53,7 +43,13 @@ class ProductDisplay extends React.Component{
       nav1: this.slider
 		});
 		document.addEventListener('keydown', this.handleKeyPress)
+		document.addEventListener('mousemove', () => {
+			if (this.state.fullscreen) {
+					document.getElementsByClassName('fullscreenToolbar')[0].style.opacity = '1'; 
+			}
+		})
 	}
+	
 	
 	productChange() {
 		Axios.get(`/products${this.state.uuid}`, {
@@ -62,21 +58,19 @@ class ProductDisplay extends React.Component{
 			}
 		})
 		.then((results) => {
-			console.log(results.data);
 			let images = [];
 			for (let key in results.data.images[0]) {
 				if(typeof(results.data.images[0][key]) === 'string') {
 					images.push(results.data.images[0][key])
 				}
-			}
-			console.log(images);
+			}			
 			this.setState({
 				product: results.data.product,
 				images: images
 			})
 		})
 		.then(() => {
-			console.log(this.state)
+			document.getElementsByClassName('detailPanel')[0].style.maxHeight = document.getElementsByClassName('detailPanel')[0].scrollHeight + 'px';
 		})
 	}
 
@@ -100,28 +94,50 @@ class ProductDisplay extends React.Component{
 		}
 	}
 
-	fullscreen() {
-		this.setState({
-			fullscreen: !this.state.fullscreen
-		},
-		() => {
-			if(this.state.fullscreen) {
-				this.fullscreenMoveSlide(this.state.slide)
-			} else {
-				this.setState({
-					nav1: this.slider
-				})
-			}
-		}		
-		)
+	detailButtonHandler(e) {
+		e.target.classList.toggle('active')
+		if(e.target.nextElementSibling.style.maxHeight !== '0px') {
+			e.target.nextElementSibling.style.maxHeight = '0px';
+		} else {
+			e.target.nextElementSibling.style.maxHeight = e.target.nextElementSibling.scrollHeight + 'px';
+		}
 	}
 
-	zoom() {
-		this.setState({
-			zoom: !this.state.zoom
-		}, () => {if(!this.state.zoom) {
-			this.fullscreenMoveSlide(this.state.slide)}
-		})
+	fullscreen(e) {
+		if(e.target.className !== 'fullscreenImg active' && e.target.className !== 'fullscreenButton--prev' && e.target.className !== 'fullscreenButton--next') {
+			if(this.state.fullscreen) {
+				document.getElementsByClassName('mainComponentWrapper')[0].style.opacity = null
+				document.getElementsByClassName('mainComponentWrapper')[0].style.visibility = null
+				document.getElementsByClassName('fullscreenGallery')[0].style.display = 'none'
+			} else {
+				document.getElementsByClassName('mainComponentWrapper')[0].style.opacity = 0
+				document.getElementsByClassName('mainComponentWrapper')[0].style.visibility = 'hidden'
+				document.getElementsByClassName('fullscreenGallery')[0].style.display = 'block'
+			}
+			this.setState({
+				fullscreen: !this.state.fullscreen
+			},
+			() => {
+				if(this.state.fullscreen) {
+					this.fullscreenMoveSlide(this.state.slide)
+				} else {
+					this.setState({
+						nav1: this.slider
+					})
+				}
+			}		
+			)
+		}
+	}
+
+	zoom(e) {
+		if (e.target.className === 'fullscreenImg active' || this.state.zoom) {
+			this.setState({
+				zoom: !this.state.zoom
+			}, () => {if(!this.state.zoom) {
+				this.fullscreenMoveSlide(this.state.slide)}
+			})
+		}
 	}
 
 	fullscreenNext() {
@@ -201,26 +217,25 @@ class ProductDisplay extends React.Component{
 		},
 		() => {
 			if(this.state.fullerScreen) {
-				if (elem.requestFullscreen) {
-					elem.requestFullscreen();
-				}
+				elem.requestFullscreen();
 			} else {
-				if (elem.exitFullscreen) {
-					elem.exitFullscreen();
-				}
+				document.webkitCancelFullScreen();
 			}
 		}
 		)
 	}
 	
 	render() {
-		if(!this.state.fullscreen) {
+		// if(!this.state.fullscreen) {
 			return(
 				<div>			
 					<input onChange={this.productHandler} type='text'></input>
 					<button onClick={this.buttonHandler}>Change Product</button>
-					<div style={divStyle}>
-						<div style={{width: '900px', margin:'1rem'}} onClick={this.fullscreen}>
+					<div className='fullscreenGallery'>
+						<FullScreenGallery fullerScreen = {this.fullerScreen} slide = {this.state.slide} fullscreenMoveSlide = {this.fullscreenMoveSlide} fullscreenPrev = {this.fullscreenPrev} fullscreenNext = {this.fullscreenNext} fullscreen = {this.fullscreen} zoomFunc = {this.zoom} zoom = {this.state.zoom} images = {this.state.images}/>
+					</div>
+					<div className='mainComponentWrapper'>
+						<div className ='mainGallery' onDoubleClick={this.fullscreen}>
 							<Slider
 								initialSlide={this.state.slide}
 								infinite={false}
@@ -233,7 +248,7 @@ class ProductDisplay extends React.Component{
 								{this.state.images.map((element, index) => {
 									return (
 										<div >
-											<img style={{width: '95%', height: '95%'}} onClick={()=> {this.fullscreenSlideSet(index)}} src={element}></img>
+											<img className='mainGalleryImg' onClick={()=> {this.fullscreenSlideSet(index)}} src={element}></img>
 										</div>
 									)
 								})}
@@ -241,23 +256,16 @@ class ProductDisplay extends React.Component{
 							{/* <MainGallery slide = {this.state.slide} slideSet = {this.fullscreenSlideSet} fullscreen = {this.fullscreen} images = {this.state.images}/> */}
 						</div>
 						<br/>
-						<div style={{componentStyle}}>
+						<div className='sideGallery'>
 							<SideGallery slider = {this.state.nav1} images = {this.state.images} slideSet = {this.fullscreenSlideSet}/>
 						</div>
 						<br/>
-						<div style={{width: '100%', padding: '10px'}}>
-							<ProductInformation button = {this.infoButtonHandler} info = {this.state.product} />
+						<div className='productInformation'>
+							<ProductInformation detailButton = {this.detailButtonHandler} infoButton = {this.infoButtonHandler} info = {this.state.product} />
 						</div>
 					</div>
 				</div>
 			)
-		} else {
-			return(
-				<div className='fullscreenGallery'>
-					<FullScreenGallery fullerScreen = {this.fullerScreen} slide = {this.state.slide} fullscreenMoveSlide = {this.fullscreenMoveSlide} fullscreenPrev = {this.fullscreenPrev} fullscreenNext = {this.fullscreenNext} fullscreen = {this.fullscreen} zoomFunc = {this.zoom} zoom = {this.state.zoom} images = {this.state.images}/>
-				</div>
-			)
-		}
 	}
 }
 

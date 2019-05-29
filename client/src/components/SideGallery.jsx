@@ -1,14 +1,9 @@
 import React from 'react';
 import Slider from "react-slick";
 
-const imageStyle = {
-    margin: '1rem',
-    width: '67px'
-};
-
 const SideGallery = (props) => {
     return (
-        <div style={imageStyle} >
+        <div className='sideGalleryImg'>
             <Slider
                 arrows={false}
                 dots={false}

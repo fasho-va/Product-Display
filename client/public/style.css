@@ -1,6 +1,142 @@
 body{
   margin: 0;
+  user-select: none;
 }
+
+/* component div styling */
+
+.fullscreenGallery {
+  display: none;
+  background: black;
+  text-align: center;
+  height: 100%;
+  margin: 0;
+}
+
+.mainGallery {
+  width: 57vw;
+  margin: 1rem;
+}
+
+.mainGalleryImg {
+  width: 98%;
+  height: 98%;
+}
+
+.sideGallery {
+  margin: 1rem;
+}
+
+.mainComponentWrapper {
+  display: flex;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+	margin: 1rem;
+}
+
+.productInformation {
+  width: 100%;
+  margin: 1rem;
+  margin-left: 3rem;
+}
+
+/* product info divs styling */
+
+.productName{
+  font-family: 'Oswald', sans-serif;
+  font-size: 30px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.05em;
+}
+
+.productPrice{
+  font-family: 'Oswald', sans-serif;
+  color: #000000;
+  font-weight: 600;
+  font-size: 28px;
+  letter-spacing: 0.05em;
+}
+
+.reviews{
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.05em;
+}
+
+.reviews:before{
+  content: '\2605''\2605''\2605''\2605''\2605';
+  color: #ffcc00;
+  margin-right: 10px;
+}
+
+ul {
+  display: block;
+  list-style-type: disc;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
+}
+
+.accordion {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 13px;
+  transition: 0.4s;
+  letter-spacing: 0.05em;
+}
+
+.accordion:after {
+  content: '\02795'; /* Unicode character for "plus" sign (+) */
+  color: black;
+  float: right;
+  margin-left: 5px;
+}
+
+.accordion.active:after {
+  content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+.detailPanel {
+  font-family: Oswald, sans-serif;
+  font-size: 13px;
+  font-style: normal;
+  letter-spacing: 0.05em;
+  padding: 0 18px;
+  background-color: white;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.panel {
+  font-family: Oswald, sans-serif;
+  font-size: 13px;
+  font-style: normal;
+  letter-spacing: 0.05em;
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+/* sidegallery component divs styling */
+
+.sideGalleryImg {
+  width: 4.6vw;
+}
+
+/* fullscreen component divs styling */
 
 .fullscreenWrapper {
   overflow: hidden;
@@ -9,13 +145,6 @@ body{
 
 .fullscreen {
   transform-style: preserve-3d;
-}
-
-.fullscreenGallery {
-	background: black;
-  text-align: center;
-  height: 100%;
-  margin: 0;
 }
 
 .fullscreenImg {
@@ -42,12 +171,6 @@ body{
 .fullscreenImg.next {
   z-index: 800;
 }
-/* .fullscreenImg.prev {
-  transform: translateX(-100%);
-}
-.fullscreenImg.next {
-  transform: translateX(100%);
-} */
 
 .fullscreenButton--prev,
 .fullscreenButton--next {
@@ -59,12 +182,15 @@ body{
   cursor: pointer; 
   z-index: 1001; /* Sit on top of everything */
 }
+
 .fullscreenButton--prev {
   left:0;
 }
+
 .fullscreenButton--next {
   right:0;
 }
+
 .fullscreenButton--prev::after,
 .fullscreenButton--next::after {
   content: " ";
@@ -75,92 +201,30 @@ body{
   left: 54%;
   border-right: 2px solid white;
   border-bottom: 2px solid white;
+  opacity: 0.75;
   transform: translate(-50%, -50%) rotate(135deg);
 }
+
 .fullscreenButton--next::after {
   left: 47%;
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
-.productName{
-  font-family: 'Oswald', sans-serif;
-  font-size: 30px;
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: 0.05em;
+.fullscreenToolbar {
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
 }
 
-.reviews{
+.fullscreenSlideCounter {
+  position: absolute;
+  left: 0;
   font-family: 'Oswald', sans-serif;
   font-size: 13px;
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: 0.05em;
-}
-
-.reviews:before{
-  content: '\2605''\2605''\2605''\2605''\2605';
-  color: #ffcc00;
-  margin-right: 10px;
-}
-
-.productPrice{
-  font-family: 'Oswald', sans-serif;
-  color: #000000;
-  font-weight: 600;
-  font-size: 28px;
-  letter-spacing: 0.05em;
-}
-
-
-.accordion {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 400;
-  cursor: pointer;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 13px;
-  transition: 0.4s;
-  letter-spacing: 0.05em;
-}
-
-.accordion:after {
-  content: '\02795'; /* Unicode character for "plus" sign (+) */
-  color: black;
-  float: right;
-  margin-left: 5px;
-}
-
-.accordion.active:after {
-  content: "\2796"; /* Unicode character for "minus" sign (-) */
-}
-
-.panel {
-  font-family: Oswald, sans-serif;
-  font-size: 13px;
-  font-style: normal;
-  letter-spacing: 0.05em;
-  padding: 0 18px;
-  background-color: white;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-}
-
-/* .slick-active {
-  margin-left: 5px;
-  margin-right: 5px;
-} */
-
-.exit:after{
-  content: '\2715';
   color: white;
-  float: right;
-  cursor: pointer;
-  margin: 12px;
-  font-size: 20px
+  margin: 16.5px;
+  opacity: 0.75;
 }
 
 .magnifyingGlass
@@ -173,8 +237,10 @@ body{
   border: 0.1em solid white;
   position: relative;
   border-radius: 0.35em;
-  margin: 16.5px
+  margin: 16.5px;
+  opacity: 0.75;
 }
+
 .magnifyingGlass::before
 {
  content: "";
@@ -190,4 +256,91 @@ body{
     -moz-transform: rotate(45deg);
      -ms-transform: rotate(45deg);
       -o-transform: rotate(45deg);
+}
+
+.magnifyingGlass:hover
+{
+  font-size: 20px; /* This controls the size. */
+  display: inline-block;
+  width: 0.4em;
+  height: 0.4em;
+  cursor: pointer;
+  border: 0.1em solid white;
+  position: relative;
+  border-radius: 0.35em;
+  margin: 16.5px;
+  opacity: 1;
+}
+
+.full-screen {
+  color: white;
+  opacity: 0.75;
+  vertical-align: middle;
+  box-sizing: border-box;
+  display: inline-block;
+  border: .1em solid currentColor;
+  width: 1em;
+  height: 1em;
+  position: relative;
+  margin: 15.5px;
+  cursor: pointer;
+}
+
+.full-screen:hover {
+  color: white;
+  opacity: 1;
+  vertical-align: middle;
+  box-sizing: border-box;
+  display: inline-block;
+  border: .1em solid currentColor;
+  width: 1em;
+  height: 1em;
+  position: relative;
+  margin: 15.5px;
+  cursor: pointer;
+}
+
+.full-screen:before, .full-screen:after {
+  content: '';
+  background: black;
+  position: absolute;
+}
+
+.full-screen:before {
+  width: .333em;
+  height: 1em;
+  left: .233em;
+  top: -.1em;
+}
+
+.full-screen:after {
+  width: 1em;
+  height: .333em;
+  top: .233em;
+  left: -.1em;
+}
+
+.exit:after{
+  content: '\2715';
+  color: white;
+  float: right;
+  cursor: pointer;
+  margin: 12px;
+  font-size: 20px;
+  opacity: 0.75;
+}
+
+.exit:hover:after{
+  content: '\2715';
+  color: white;
+  float: right;
+  cursor: pointer;
+  margin: 12px;
+  font-size: 20px;
+  opacity: 1;
+}
+
+.zoomedIn {
+  width: 100%;
+  cursor: zoom-out;
 }
