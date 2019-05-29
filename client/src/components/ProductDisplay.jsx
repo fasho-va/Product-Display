@@ -7,17 +7,6 @@ import FullScreenGallery from './FullScreenGallery.jsx'
 import Slider from "react-slick";
 
 
-
-const divStyle = {
-	display: 'flex',
-	margin: '1rem'
-}
-
-const componentStyle = {
-	margin: '1rem'
-}
-
-
 class ProductDisplay extends React.Component{
 	constructor(props) {
 		super(props)
@@ -54,7 +43,13 @@ class ProductDisplay extends React.Component{
       nav1: this.slider
 		});
 		document.addEventListener('keydown', this.handleKeyPress)
+		document.addEventListener('mousemove', () => {
+			if (this.state.fullscreen) {
+					document.getElementsByClassName('fullscreenToolbar')[0].style.opacity = '1'; 
+			}
+		})
 	}
+	
 	
 	productChange() {
 		Axios.get(`/products${this.state.uuid}`, {
@@ -240,7 +235,7 @@ class ProductDisplay extends React.Component{
 						<FullScreenGallery fullerScreen = {this.fullerScreen} slide = {this.state.slide} fullscreenMoveSlide = {this.fullscreenMoveSlide} fullscreenPrev = {this.fullscreenPrev} fullscreenNext = {this.fullscreenNext} fullscreen = {this.fullscreen} zoomFunc = {this.zoom} zoom = {this.state.zoom} images = {this.state.images}/>
 					</div>
 					<div className='mainComponentWrapper'>
-						<div style={{width: '900px', margin:'1rem'}} onDoubleClick={this.fullscreen}>
+						<div className ='mainGallery' onDoubleClick={this.fullscreen}>
 							<Slider
 								initialSlide={this.state.slide}
 								infinite={false}
@@ -253,7 +248,7 @@ class ProductDisplay extends React.Component{
 								{this.state.images.map((element, index) => {
 									return (
 										<div >
-											<img style={{width: '95%', height: '95%'}} onClick={()=> {this.fullscreenSlideSet(index)}} src={element}></img>
+											<img className='mainGalleryImg' onClick={()=> {this.fullscreenSlideSet(index)}} src={element}></img>
 										</div>
 									)
 								})}
@@ -261,7 +256,7 @@ class ProductDisplay extends React.Component{
 							{/* <MainGallery slide = {this.state.slide} slideSet = {this.fullscreenSlideSet} fullscreen = {this.fullscreen} images = {this.state.images}/> */}
 						</div>
 						<br/>
-						<div style={{componentStyle}}>
+						<div className='sideGallery'>
 							<SideGallery slider = {this.state.nav1} images = {this.state.images} slideSet = {this.fullscreenSlideSet}/>
 						</div>
 						<br/>
@@ -271,13 +266,6 @@ class ProductDisplay extends React.Component{
 					</div>
 				</div>
 			)
-		// } else {
-		// 	return(
-		// 		<div className='fullscreenGallery'>
-		// 			<FullScreenGallery fullerScreen = {this.fullerScreen} slide = {this.state.slide} fullscreenMoveSlide = {this.fullscreenMoveSlide} fullscreenPrev = {this.fullscreenPrev} fullscreenNext = {this.fullscreenNext} fullscreen = {this.fullscreen} zoomFunc = {this.zoom} zoom = {this.state.zoom} images = {this.state.images}/>
-		// 		</div>
-		// 	)
-		// }
 	}
 }
 
