@@ -13,7 +13,6 @@ app.use(express.static('./client/public'))
 
 app.get('/products:id', (req, res) => {
   let totalInfo = {};
-  console.log(req.params);
   db.getProductImages(req.params.id, (err, results) => {
     if (err) {
       console.log(err)
