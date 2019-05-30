@@ -19,7 +19,7 @@ const ProductInformation = (props) => {
 			</ul>
 			<hr></hr>
 			<div className='accordion' onClick={props.infoButton}>SHIPPING INFORMATION</div>
-			<div className='panel'>$80 By Packmule</div>
+			<div className='panel'>$5.99 via UPS</div>
 			<hr></hr>
 			<div className='accordion' onClick={props.infoButton}>RETURNS</div>
 			<div className='panel'>No Returns</div>

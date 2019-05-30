@@ -41,12 +41,15 @@ class ProductDisplay extends React.Component{
 	}
 
 	componentDidMount() {
+		window.addEventListener('updateUuid', (event) => {
+      this.setState({uuid: event.detail});
+    }, false);
 		this.productChange();
 		this.setState({
       nav1: this.slider
 		});
-		document.addEventListener('keydown', this.handleKeyPress)
-		document.addEventListener('mousemove', () => {
+		window.addEventListener('keydown', this.handleKeyPress)
+		window.addEventListener('mousemove', () => {
 			if (this.state.fullscreen) {
 					document.getElementsByClassName('fullscreenToolbar')[0].style.opacity = '1'; 
 			}
@@ -80,9 +83,9 @@ class ProductDisplay extends React.Component{
 
 	productHandler(e) {
 		console.log(e.target.value);
-		this.setState({
-			uuid: e.target.value
-		})
+			const event = new CustomEvent('updateUuid', { detail: e.target.value });
+			console.log(event);
+			window.dispatchEvent(event);
 	}
 
 	buttonHandler() {
