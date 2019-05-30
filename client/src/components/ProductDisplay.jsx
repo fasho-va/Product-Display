@@ -42,7 +42,9 @@ class ProductDisplay extends React.Component{
 
 	componentDidMount() {
 		window.addEventListener('updateUuid', (event) => {
-      this.setState({uuid: event.detail});
+      this.setState({uuid: event.detail}, () => {
+				this.productChange();
+			});
     }, false);
 		this.productChange();
 		this.setState({
@@ -55,6 +57,10 @@ class ProductDisplay extends React.Component{
 			}
 		})
 	}
+
+	// componentDidUpdate(prevProps, prevState) {
+
+	// }
 	
 	
 	productChange() {

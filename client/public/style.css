@@ -37,7 +37,7 @@ body{
 
 .sideGallery {
   margin: 1rem;
-  width: 50%;
+  width: 25%;
 }
 
 .mainComponentWrapper {
@@ -51,7 +51,6 @@ body{
 .productInformation {
   width: 100%;
   margin: 1rem;
-  margin-left: 3rem;
 }
 
 /* product info divs styling */
