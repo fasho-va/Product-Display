@@ -21,7 +21,6 @@ class ProductDisplay extends React.Component{
 			nav2: null,
 			fullerScreen: false
 		}
-		this.buttonHandler = this.buttonHandler.bind(this);
 		this.productChange = this.productChange.bind(this);
 		this.infoButtonHandler = this.infoButtonHandler.bind(this);
 		this.fullscreen = this.fullscreen.bind(this);
@@ -41,7 +40,7 @@ class ProductDisplay extends React.Component{
 
 	componentDidMount() {
 		window.addEventListener('updateUuid', (event) => {
-			console.log(event.detail)
+
       this.setState({uuid: event.detail}, () => {
 				this.productChange();
 			});
