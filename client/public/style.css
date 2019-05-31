@@ -17,7 +17,7 @@ body{
   top: 0;
   bottom: 0;
   z-index: 1;
-  overflow: hidden;
+  overflow: auto;
   position: absolute;
   background: black;
   text-align: center;

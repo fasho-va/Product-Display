@@ -21,7 +21,6 @@ class ProductDisplay extends React.Component{
 			nav2: null,
 			fullerScreen: false
 		}
-		this.productHandler = this.productHandler.bind(this);
 		this.buttonHandler = this.buttonHandler.bind(this);
 		this.productChange = this.productChange.bind(this);
 		this.infoButtonHandler = this.infoButtonHandler.bind(this);
@@ -42,6 +41,7 @@ class ProductDisplay extends React.Component{
 
 	componentDidMount() {
 		window.addEventListener('updateUuid', (event) => {
+			console.log(event.detail)
       this.setState({uuid: event.detail}, () => {
 				this.productChange();
 			});
@@ -57,11 +57,6 @@ class ProductDisplay extends React.Component{
 			}
 		})
 	}
-
-	// componentDidUpdate(prevProps, prevState) {
-
-	// }
-	
 	
 	productChange() {
 		Axios.get(`http://ec2-18-216-220-130.us-east-2.compute.amazonaws.com/products${this.state.uuid}`, {
@@ -87,16 +82,6 @@ class ProductDisplay extends React.Component{
 		})
 	}
 
-	productHandler(e) {
-		console.log(e.target.value);
-			const event = new CustomEvent('updateUuid', { detail: e.target.value });
-			console.log(event);
-			window.dispatchEvent(event);
-	}
-
-	buttonHandler() {
-		this.productChange();
-	}
 
 	infoButtonHandler(e) {
 		e.target.classList.toggle('active')
@@ -121,12 +106,12 @@ class ProductDisplay extends React.Component{
 			if(this.state.fullscreen) {
 				this.mainComponentWrapper.current.style.opacity = null
 				this.mainComponentWrapper.current.style.visibility = null
-				this.fullscreenGalleryComp.current.style.display = 'none'
-				console.log(this.fullscreenChildRef)
+				this.fullscreenGalleryComp.current.style.display = 'none'	
 			} else {
 				this.mainComponentWrapper.current.style.opacity = 0
 				this.mainComponentWrapper.current.style.visibility = 'hidden'
 				this.fullscreenGalleryComp.current.style.display = 'block'
+				window.location = '#'
 			}
 			this.setState({
 				fullscreen: !this.state.fullscreen
@@ -240,9 +225,7 @@ class ProductDisplay extends React.Component{
 		// if(!this.state.fullscreen) {
 			return(
 				<div>			
-					<input onChange={this.productHandler} type='text'></input>
-					<button onClick={this.buttonHandler}>Change Product</button>
-					<div className='fullscreenGallery' ref={this.fullscreenGalleryComp}>
+					<div onScroll={()=> {console.log('scroll')}} className='fullscreenGallery' ref={this.fullscreenGalleryComp}>
 						<FullScreenGallery childRef = {el => (this.fullscreenChildRef = el)} fullerScreen = {this.fullerScreen} slide = {this.state.slide} fullscreenMoveSlide = {this.fullscreenMoveSlide} fullscreenPrev = {this.fullscreenPrev} fullscreenNext = {this.fullscreenNext} fullscreen = {this.fullscreen} zoomFunc = {this.zoom} zoom = {this.state.zoom} images = {this.state.images}/>
 					</div>
 					<div className='mainComponentWrapper' ref={this.mainComponentWrapper}>
