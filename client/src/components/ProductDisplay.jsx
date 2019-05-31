@@ -40,21 +40,21 @@ class ProductDisplay extends React.Component{
 
 	componentDidMount() {
 		window.addEventListener('updateUuid', (event) => {
-
-      this.setState({uuid: event.detail}, () => {
+			this.setState({uuid: event.detail}, () => {
 				this.productChange();
 			});
-    }, false);
+		}, false);
 		this.productChange();
 		this.setState({
-      nav1: this.slider
+			nav1: this.slider
 		});
 		window.addEventListener('keydown', this.handleKeyPress)
 		window.addEventListener('mousemove', () => {
 			if (this.state.fullscreen) {
-					document.getElementsByClassName('fullscreenToolbar')[0].style.opacity = '1'; 
+				document.getElementsByClassName('fullscreenToolbar')[0].style.opacity = '1'; 
 			}
 		})
+		
 	}
 	
 	productChange() {
@@ -102,15 +102,17 @@ class ProductDisplay extends React.Component{
 
 	fullscreen(e) {
 		if(e.target.className !== 'fullscreenImg active' && e.target.className !== 'fullscreenButton--prev' && e.target.className !== 'fullscreenButton--next') {
+			window.location = '#'
 			if(this.state.fullscreen) {
 				this.mainComponentWrapper.current.style.opacity = null
 				this.mainComponentWrapper.current.style.visibility = null
-				this.fullscreenGalleryComp.current.style.display = 'none'	
+				this.fullscreenGalleryComp.current.style.display = 'none'
+				window.removeEventListener('scroll', this.fullscreen)
 			} else {
 				this.mainComponentWrapper.current.style.opacity = 0
 				this.mainComponentWrapper.current.style.visibility = 'hidden'
 				this.fullscreenGalleryComp.current.style.display = 'block'
-				window.location = '#'
+				window.addEventListener('scroll', this.fullscreen)
 			}
 			this.setState({
 				fullscreen: !this.state.fullscreen
@@ -224,7 +226,7 @@ class ProductDisplay extends React.Component{
 		// if(!this.state.fullscreen) {
 			return(
 				<div>			
-					<div onScroll={()=> {console.log('scroll')}} className='fullscreenGallery' ref={this.fullscreenGalleryComp}>
+					<div className='fullscreenGallery' ref={this.fullscreenGalleryComp}>
 						<FullScreenGallery childRef = {el => (this.fullscreenChildRef = el)} fullerScreen = {this.fullerScreen} slide = {this.state.slide} fullscreenMoveSlide = {this.fullscreenMoveSlide} fullscreenPrev = {this.fullscreenPrev} fullscreenNext = {this.fullscreenNext} fullscreen = {this.fullscreen} zoomFunc = {this.zoom} zoom = {this.state.zoom} images = {this.state.images}/>
 					</div>
 					<div className='mainComponentWrapper' ref={this.mainComponentWrapper}>

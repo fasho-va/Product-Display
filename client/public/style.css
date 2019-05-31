@@ -38,6 +38,8 @@ body{
 .sideGallery {
   margin: 1rem;
   width: 25%;
+  overflow: hidden;
+  height: 55vh;
 }
 
 .mainComponentWrapper {
