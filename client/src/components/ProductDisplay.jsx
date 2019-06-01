@@ -19,7 +19,8 @@ class ProductDisplay extends React.Component{
 			slide: 0,
 			nav1: null,
 			nav2: null,
-			fullerScreen: false
+			fullerScreen: false,
+			mobile: true
 		}
 		this.productChange = this.productChange.bind(this);
 		this.infoButtonHandler = this.infoButtonHandler.bind(this);
@@ -36,18 +37,23 @@ class ProductDisplay extends React.Component{
 		this.mainComponentWrapper = React.createRef();
 		this.fullscreenGalleryComp = React.createRef();
 		this.productInfo = React.createRef();
+		this.fullscreenChildRef = React.createRef();
+		this.handleScroll = this.handleScroll.bind(this)
+		this.handleMobile = this.handleMobile.bind(this)
 	}
 
 	componentDidMount() {
 		window.addEventListener('updateUuid', (event) => {
-			this.setState({uuid: event.detail}, () => {
+			this.setState({uuid: event.detail, slide: 0}, () => {
 				this.productChange();
 			});
 		}, false);
+		this.fullscreenGalleryComp.current.focus();
 		this.productChange();
 		this.setState({
 			nav1: this.slider
 		});
+		window.addEventListener('resize', this.handleMobile)
 		window.addEventListener('keydown', this.handleKeyPress)
 		window.addEventListener('mousemove', () => {
 			if (this.state.fullscreen) {
@@ -56,7 +62,13 @@ class ProductDisplay extends React.Component{
 		})
 		
 	}
-	
+
+	handleMobile() {
+		if(window.innerWidth < 900) {
+			this.setState({mobile: true})
+		}
+	}
+
 	productChange() {
 		Axios.get(`http://ec2-18-216-220-130.us-east-2.compute.amazonaws.com/products${this.state.uuid}`, {
 			params: {
@@ -102,17 +114,20 @@ class ProductDisplay extends React.Component{
 
 	fullscreen(e) {
 		if(e.target.className !== 'fullscreenImg active' && e.target.className !== 'fullscreenButton--prev' && e.target.className !== 'fullscreenButton--next') {
-			window.location = '#'
 			if(this.state.fullscreen) {
 				this.mainComponentWrapper.current.style.opacity = null
 				this.mainComponentWrapper.current.style.visibility = null
 				this.fullscreenGalleryComp.current.style.display = 'none'
 				window.removeEventListener('scroll', this.fullscreen)
-			} else {
+			} else if (!this.state.fullscreen && !this.state.mobile){
 				this.mainComponentWrapper.current.style.opacity = 0
 				this.mainComponentWrapper.current.style.visibility = 'hidden'
 				this.fullscreenGalleryComp.current.style.display = 'block'
+				window.location = '#'
+				// this.onScroll()
 				window.addEventListener('scroll', this.fullscreen)
+			} else if (this.state.mobile) {
+				return
 			}
 			this.setState({
 				fullscreen: !this.state.fullscreen
@@ -221,9 +236,12 @@ class ProductDisplay extends React.Component{
 		}
 		)
 	}
+
+	handleScroll() {
+		console.log('scroll')
+	}
 	
 	render() {
-		// if(!this.state.fullscreen) {
 			return(
 				<div>			
 					<div className='fullscreenGallery' ref={this.fullscreenGalleryComp}>
