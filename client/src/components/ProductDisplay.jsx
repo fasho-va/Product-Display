@@ -20,7 +20,7 @@ class ProductDisplay extends React.Component{
 			nav1: null,
 			nav2: null,
 			fullerScreen: false,
-			mobile: true
+			mobile: false
 		}
 		this.productChange = this.productChange.bind(this);
 		this.infoButtonHandler = this.infoButtonHandler.bind(this);
@@ -38,7 +38,6 @@ class ProductDisplay extends React.Component{
 		this.fullscreenGalleryComp = React.createRef();
 		this.productInfo = React.createRef();
 		this.fullscreenChildRef = React.createRef();
-		this.handleScroll = this.handleScroll.bind(this)
 		this.handleMobile = this.handleMobile.bind(this)
 	}
 
@@ -64,8 +63,10 @@ class ProductDisplay extends React.Component{
 	}
 
 	handleMobile() {
-		if(window.innerWidth < 900) {
+		if(window.innerWidth <= 900) {
 			this.setState({mobile: true})
+		} else if (window.innerWidth > 900) {
+			this.setState({mobile: false})
 		}
 	}
 
@@ -88,7 +89,6 @@ class ProductDisplay extends React.Component{
 			})
 		})
 		.then(() => {
-			console.log();
 			this.productInfo.current.children[0].children[5].style.maxHeight = this.productInfo.current.children[0].children[5].scrollHeight + 'px';
 		})
 	}
@@ -185,7 +185,6 @@ class ProductDisplay extends React.Component{
 		let oldPrev = slide - 2;
 		let oldNext = slide + 2;
 		let items = this.fullscreenChildRef.children
-		console.log(items)
 		if(slide === 0) {
 			newPrev = items.length - 1;
 			oldPrev = items.length - 2;
@@ -198,7 +197,6 @@ class ProductDisplay extends React.Component{
 		} else if(oldPrev < 0) {
 			oldPrev = items.length - 1
 		}
-		console.log(oldPrev, newPrev);
 		items[oldPrev].className = 'fullscreenImg';
 		items[oldNext].className = 'fullscreenImg';
 		items[newPrev].className = 'fullscreenImg' + " prev";
@@ -237,9 +235,7 @@ class ProductDisplay extends React.Component{
 		)
 	}
 
-	handleScroll() {
-		console.log('scroll')
-	}
+
 	
 	render() {
 			return(
