@@ -52,6 +52,7 @@ class ProductDisplay extends React.Component{
 		this.setState({
 			nav1: this.slider
 		});
+		this.handleMobile();
 		window.addEventListener('resize', this.handleMobile)
 		window.addEventListener('keydown', this.handleKeyPress)
 		window.addEventListener('mousemove', () => {
@@ -113,7 +114,7 @@ class ProductDisplay extends React.Component{
 	}
 
 	fullscreen(e) {
-		if(e.target.className !== 'fullscreenImg active' && e.target.className !== 'fullscreenButton--prev' && e.target.className !== 'fullscreenButton--next') {
+		if(e.target.className !== 'fullscreenImg active' && e.target.className !== 'fullscreenButton--prev' && e.target.className !== 'fullscreenButton--next' && !this.state.fullerScreen) {
 			if(this.state.fullscreen) {
 				this.mainComponentWrapper.current.style.opacity = null
 				this.mainComponentWrapper.current.style.visibility = null
