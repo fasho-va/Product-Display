@@ -64,6 +64,8 @@
   font-weight: 600;
   font-size: 18px;
   letter-spacing: 0.05em;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .reviews{
@@ -98,7 +100,7 @@ ul {
   border: none;
   text-align: left;
   outline: none;
-  font-size: 10px;
+  font-size: 12px;
   transition: 0.4s;
   letter-spacing: 0.05em;
 }
@@ -116,7 +118,7 @@ ul {
 
 .detailPanel {
   font-family: Oswald, sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   font-style: normal;
   letter-spacing: 0.05em;
   padding: 0 18px;
@@ -127,7 +129,7 @@ ul {
 
 .panel {
   font-family: Oswald, sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   font-style: normal;
   letter-spacing: 0.05em;
   padding: 0 18px;
