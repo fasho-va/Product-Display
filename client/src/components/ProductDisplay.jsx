@@ -255,7 +255,7 @@ class ProductDisplay extends React.Component{
 								ref={slider => (this.slider = slider)}
 								responsive={[{breakpoint: 900, settings: {
 									slidesToShow: 1,
-									slidesToScroll: 1,
+									speed: 900,
 									initialSlide: this.state.slide
 								}}]}
 							>
