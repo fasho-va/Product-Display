@@ -9,7 +9,7 @@ const ProductInformation = (props) => {
 		<div>
 			<div className='productName'>{props.info.name}</div>
 			<div className='productPrice'>${props.info.cost} USD</div>
-			<p className='reviews'>{props.info.reviews} Reviews</p>
+			<p className='reviews'>20 Reviews</p>
 			<hr></hr>
 			<div className='accordion active' onClick={props.detailButton}>PRODUCT DETAILS</div>
 			<ul className='detailPanel'>

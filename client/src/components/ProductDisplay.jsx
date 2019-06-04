@@ -19,10 +19,9 @@ class ProductDisplay extends React.Component{
 			slide: 0,
 			nav1: null,
 			nav2: null,
-			fullerScreen: false
+			fullerScreen: false,
+			mobile: false
 		}
-		this.productHandler = this.productHandler.bind(this);
-		this.buttonHandler = this.buttonHandler.bind(this);
 		this.productChange = this.productChange.bind(this);
 		this.infoButtonHandler = this.infoButtonHandler.bind(this);
 		this.fullscreen = this.fullscreen.bind(this);
@@ -38,25 +37,40 @@ class ProductDisplay extends React.Component{
 		this.mainComponentWrapper = React.createRef();
 		this.fullscreenGalleryComp = React.createRef();
 		this.productInfo = React.createRef();
+		this.fullscreenChildRef = React.createRef();
+		this.handleMobile = this.handleMobile.bind(this)
 	}
 
 	componentDidMount() {
 		window.addEventListener('updateUuid', (event) => {
-      this.setState({uuid: event.detail});
-    }, false);
+			this.setState({uuid: event.detail, slide: 0}, () => {
+				this.productChange();
+			});
+		}, false);
+		this.fullscreenGalleryComp.current.focus();
 		this.productChange();
 		this.setState({
-      nav1: this.slider
+			nav1: this.slider
 		});
+		this.handleMobile();
+		window.addEventListener('resize', this.handleMobile)
 		window.addEventListener('keydown', this.handleKeyPress)
 		window.addEventListener('mousemove', () => {
 			if (this.state.fullscreen) {
-					document.getElementsByClassName('fullscreenToolbar')[0].style.opacity = '1'; 
+				document.getElementsByClassName('fullscreenToolbar')[0].style.opacity = '1'; 
 			}
 		})
+		
 	}
-	
-	
+
+	handleMobile() {
+		if(window.innerWidth <= 900) {
+			this.setState({mobile: true})
+		} else if (window.innerWidth > 900) {
+			this.setState({mobile: false})
+		}
+	}
+
 	productChange() {
 		Axios.get(`http://ec2-18-216-220-130.us-east-2.compute.amazonaws.com/products${this.state.uuid}`, {
 			params: {
@@ -76,21 +90,10 @@ class ProductDisplay extends React.Component{
 			})
 		})
 		.then(() => {
-			console.log();
 			this.productInfo.current.children[0].children[5].style.maxHeight = this.productInfo.current.children[0].children[5].scrollHeight + 'px';
 		})
 	}
 
-	productHandler(e) {
-		console.log(e.target.value);
-			const event = new CustomEvent('updateUuid', { detail: e.target.value });
-			console.log(event);
-			window.dispatchEvent(event);
-	}
-
-	buttonHandler() {
-		this.productChange();
-	}
 
 	infoButtonHandler(e) {
 		e.target.classList.toggle('active')
@@ -111,16 +114,21 @@ class ProductDisplay extends React.Component{
 	}
 
 	fullscreen(e) {
-		if(e.target.className !== 'fullscreenImg active' && e.target.className !== 'fullscreenButton--prev' && e.target.className !== 'fullscreenButton--next') {
+		if(e.target.className !== 'fullscreenImg active' && e.target.className !== 'fullscreenButton--prev' && e.target.className !== 'fullscreenButton--next' && !this.state.fullerScreen) {
 			if(this.state.fullscreen) {
 				this.mainComponentWrapper.current.style.opacity = null
 				this.mainComponentWrapper.current.style.visibility = null
 				this.fullscreenGalleryComp.current.style.display = 'none'
-				console.log(this.fullscreenChildRef)
-			} else {
+				window.removeEventListener('scroll', this.fullscreen)
+			} else if (!this.state.fullscreen && !this.state.mobile){
 				this.mainComponentWrapper.current.style.opacity = 0
 				this.mainComponentWrapper.current.style.visibility = 'hidden'
 				this.fullscreenGalleryComp.current.style.display = 'block'
+				window.location = '#'
+				// this.onScroll()
+				window.addEventListener('scroll', this.fullscreen)
+			} else if (this.state.mobile) {
+				return
 			}
 			this.setState({
 				fullscreen: !this.state.fullscreen
@@ -178,7 +186,6 @@ class ProductDisplay extends React.Component{
 		let oldPrev = slide - 2;
 		let oldNext = slide + 2;
 		let items = this.fullscreenChildRef.children
-		console.log(items)
 		if(slide === 0) {
 			newPrev = items.length - 1;
 			oldPrev = items.length - 2;
@@ -191,7 +198,6 @@ class ProductDisplay extends React.Component{
 		} else if(oldPrev < 0) {
 			oldPrev = items.length - 1
 		}
-		console.log(oldPrev, newPrev);
 		items[oldPrev].className = 'fullscreenImg';
 		items[oldNext].className = 'fullscreenImg';
 		items[newPrev].className = 'fullscreenImg' + " prev";
@@ -229,13 +235,12 @@ class ProductDisplay extends React.Component{
 		}
 		)
 	}
+
+
 	
 	render() {
-		// if(!this.state.fullscreen) {
 			return(
 				<div>			
-					<input onChange={this.productHandler} type='text'></input>
-					<button onClick={this.buttonHandler}>Change Product</button>
 					<div className='fullscreenGallery' ref={this.fullscreenGalleryComp}>
 						<FullScreenGallery childRef = {el => (this.fullscreenChildRef = el)} fullerScreen = {this.fullerScreen} slide = {this.state.slide} fullscreenMoveSlide = {this.fullscreenMoveSlide} fullscreenPrev = {this.fullscreenPrev} fullscreenNext = {this.fullscreenNext} fullscreen = {this.fullscreen} zoomFunc = {this.zoom} zoom = {this.state.zoom} images = {this.state.images}/>
 					</div>
@@ -251,7 +256,7 @@ class ProductDisplay extends React.Component{
 								ref={slider => (this.slider = slider)}
 								responsive={[{breakpoint: 900, settings: {
 									slidesToShow: 1,
-									slidesToScroll: 1,
+									speed: 900,
 									initialSlide: this.state.slide
 								}}]}
 							>

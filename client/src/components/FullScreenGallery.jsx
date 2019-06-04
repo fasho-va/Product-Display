@@ -10,7 +10,7 @@ const FullScreenGallery = (props) => {
           <div onClick={props.zoomFunc} className='magnifyingGlass'></div>
           <div onClick={props.fullscreen} className='exit'></div>
         </div>
-        <div className='fullscreenWrapper' onClick={props.fullscreen}>
+        <div  className='fullscreenWrapper' onClick={props.fullscreen}>
           <div className ='fullscreen' ref={props.childRef}>
             {props.images.map((element) => {
                 return <img onClick={props.zoomFunc} className='fullscreenImg' src={element}></img>

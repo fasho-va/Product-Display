@@ -17,7 +17,7 @@ body{
   top: 0;
   bottom: 0;
   z-index: 1;
-  overflow: hidden;
+  overflow: auto;
   position: absolute;
   background: black;
   text-align: center;
@@ -37,7 +37,8 @@ body{
 
 .sideGallery {
   margin: 1rem;
-  width: 50%;
+  width: 25%;
+  overflow: hidden;
 }
 
 .mainComponentWrapper {
@@ -50,8 +51,8 @@ body{
 
 .productInformation {
   width: 100%;
+  height: 100%;
   margin: 1rem;
-  margin-left: 3rem;
 }
 
 /* product info divs styling */
