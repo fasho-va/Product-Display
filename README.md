@@ -9,9 +9,10 @@ This component displays the product information and images. Includes the image g
   - https://github.com/fasho-va/Add-To-Bag
 
 
+### Demo
+![Image of Demo](https://fashovapictures.s3.us-east-2.amazonaws.com/ProductDisplay.png)
 
-
-### Installing Dependencies
+#### Installing Dependencies
 
 From within the root directory:
 
